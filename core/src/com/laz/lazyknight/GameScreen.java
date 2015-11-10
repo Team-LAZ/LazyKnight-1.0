@@ -17,6 +17,7 @@ public class GameScreen extends Stage implements Screen {
     Game game;
     TouchPad touchpad;
     Character character;
+    AttackButton attackButton;
 
     SpriteBatch batch;
     OrthographicCamera camera;
@@ -28,6 +29,7 @@ public class GameScreen extends Stage implements Screen {
         this.game = game;
         touchpad = new TouchPad(30, 30);
         character = new Character(150, 150);
+        attackButton = new AttackButton(600, 75);
 
         batch = new SpriteBatch();
 
@@ -41,6 +43,7 @@ public class GameScreen extends Stage implements Screen {
 
         this.addActor(touchpad.touchpad);
         this.addActor(character.imgKnight);
+        this.addActor(attackButton.ibtnAttack);
     }
 
     @Override

@@ -6,7 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
@@ -18,6 +20,8 @@ public class GameScreen extends Stage implements Screen {
     TouchPad touchpad;
     Character character;
     AttackButton attackButton;
+    JumpButton jumpButton;
+    MagicButton magicButton;
 
     SpriteBatch batch;
     OrthographicCamera camera;
@@ -29,7 +33,9 @@ public class GameScreen extends Stage implements Screen {
         this.game = game;
         touchpad = new TouchPad(30, 30);
         character = new Character(150, 150);
-        attackButton = new AttackButton(600, 75);
+        attackButton = new AttackButton(615, 25);
+        jumpButton = new JumpButton(700, 75);
+        magicButton = new MagicButton(605, 115);
 
         batch = new SpriteBatch();
 
@@ -41,9 +47,32 @@ public class GameScreen extends Stage implements Screen {
         fVelX = 5;
         fVelY = 5;
 
+        attackButton.ibtnAttack.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                attack();
+            }
+        });
+
+        jumpButton.ibtnJump.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                jump();
+            }
+        });
+
+        magicButton.ibtnMagic.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                magic();
+            }
+        });
+
         this.addActor(touchpad.touchpad);
         this.addActor(character.imgKnight);
         this.addActor(attackButton.ibtnAttack);
+        this.addActor(jumpButton.ibtnJump);
+        this.addActor(magicButton.ibtnMagic);
     }
 
     @Override
@@ -58,7 +87,6 @@ public class GameScreen extends Stage implements Screen {
         camera.update();
 
         character.imgKnight.setX(character.imgKnight.getX() + touchpad.touchpad.getKnobPercentX() * fVelX);
-        character.imgKnight.setY(character.imgKnight.getY() + touchpad.touchpad.getKnobPercentY() * fVelY);
 
         batch.begin();
         batch.end();
@@ -85,5 +113,17 @@ public class GameScreen extends Stage implements Screen {
     @Override
     public void hide() {
 
+    }
+
+    public void attack() {
+        System.out.println("ATTACK");
+    }
+
+    public void jump() {
+        System.out.println("JUMP");
+    }
+
+    public void magic() {
+        System.out.println("MAGIC");
     }
 }

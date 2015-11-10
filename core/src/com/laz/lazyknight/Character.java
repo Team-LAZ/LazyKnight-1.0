@@ -1,6 +1,5 @@
 package com.laz.lazyknight;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -14,7 +13,7 @@ public class Character extends Actor {
     Image imgKnight;
 
     public Character(int x, int y) {
-        texKnight = new Texture(Gdx.files.internal("knight.png"));
+        texKnight = new Texture("knight.png");
 
         imgKnight = new Image(texKnight);
         imgKnight.setPosition(x, y);

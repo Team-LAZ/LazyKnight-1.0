@@ -1,57 +1,22 @@
 package com.laz.lazyknight;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class Character implements ApplicationListener {
+//http://stackoverflow.com/questions/13780742/libgdx-difference-between-sprite-and-actor
+//http://stackoverflow.com/questions/21495258/how-can-i-change-the-texture-in-a-scene2d-image-using-libgdx
 
-    Controls controls;
+public class Character extends Actor {
 
-    SpriteBatch batch;
     Texture texKnight;
-    Sprite sprKnight;
+    Image imgKnight;
 
-    @Override
-    public void create() {
-        controls = new Controls();
-
-        batch = new SpriteBatch();
-
+    public Character(int x, int y) {
         texKnight = new Texture(Gdx.files.internal("knight.png"));
-        sprKnight = new Sprite(texKnight);
-        sprKnight.setPosition(100, 100);
-    }
 
-    @Override
-    public void render() {
-        batch.begin();
-        sprKnight.draw(batch);
-        batch.end();
-
-        sprKnight.setX(sprKnight.getX() + controls.touchpad.getKnobPercentX() * 5);
-        sprKnight.setY(sprKnight.getY() + controls.touchpad.getKnobPercentY() * 5);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-
+        imgKnight = new Image(texKnight);
+        imgKnight.setPosition(x, y);
     }
 }

@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 public class GameScreen extends Stage implements Screen {
 
     Game game;
-    TouchPad touchpad;
+    DPad dpad;
     Character character;
     AttackButton attackButton;
     JumpButton jumpButton;
@@ -27,11 +27,11 @@ public class GameScreen extends Stage implements Screen {
     OrthographicCamera camera;
     ScalingViewport sv;
 
-    float fVelX, fVelY;
+    float fVelX;
 
     public GameScreen(Game game) {
         this.game = game;
-        touchpad = new TouchPad(30, 30);
+        dpad = new DPad();
         character = new Character(150, 150);
         attackButton = new AttackButton(615, 25);
         jumpButton = new JumpButton(700, 75);
@@ -45,7 +45,6 @@ public class GameScreen extends Stage implements Screen {
         sv = new ScalingViewport(Scaling.none, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         fVelX = 5;
-        fVelY = 5;
 
         attackButton.ibtnAttack.addListener(new ChangeListener() {
             @Override
@@ -68,11 +67,31 @@ public class GameScreen extends Stage implements Screen {
             }
         });
 
-        this.addActor(touchpad.touchpad);
+        dpad.ibtnDpad[0].addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                up();
+            }
+        });
+
+        dpad.ibtnDpad[2].addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                down();
+            }
+        });
+
+        //add actors to the stage
         this.addActor(character.imgKnight);
         this.addActor(attackButton.ibtnAttack);
         this.addActor(jumpButton.ibtnJump);
         this.addActor(magicButton.ibtnMagic);
+
+        //add dpad to the stage
+        this.addActor(dpad.imgOutline);
+        for (int i = 0; i < 4; i++) {
+            this.addActor(dpad.ibtnDpad[i]);
+        }
     }
 
     @Override
@@ -86,13 +105,19 @@ public class GameScreen extends Stage implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
-        character.imgKnight.setX(character.imgKnight.getX() + touchpad.touchpad.getKnobPercentX() * fVelX);
-
         batch.begin();
         batch.end();
 
         this.act(Gdx.graphics.getDeltaTime());
         this.draw();
+
+        if (dpad.ibtnDpad[1].isPressed()) {
+            right();
+        }
+
+        if (dpad.ibtnDpad[3].isPressed()) {
+            left();
+        }
     }
 
     @Override
@@ -125,5 +150,21 @@ public class GameScreen extends Stage implements Screen {
 
     public void magic() {
         System.out.println("MAGIC");
+    }
+
+    public void up() {
+        System.out.println("UP");
+    }
+
+    public void right() {
+        character.imgKnight.setX(character.imgKnight.getX() + fVelX);
+    }
+
+    public void down() {
+        System.out.println("DOWN");
+    }
+
+    public void left() {
+        character.imgKnight.setX(character.imgKnight.getX() - fVelX);
     }
 }

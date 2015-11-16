@@ -5,11 +5,12 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.laz.lazyknight.LazyKnight;
 
 public class DesktopLauncher {
-	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+
+    public static void main(String[] arg) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "Lazy Knight - 1.0";
-        config.width = 800;
-        config.height = 480;
-		new LwjglApplication(new LazyKnight(), config);
-	}
+        config.width = 1280;
+        config.height = 720;
+        new LwjglApplication(new LazyKnight(), config);
+    }
 }

@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 //https://github.com/captainkesty/CCSBombDrop/blob/master/core/src/com/mygdx/game/GameScreen.java
 
@@ -25,27 +23,24 @@ public class GameScreen extends Stage implements Screen {
 
     SpriteBatch batch;
     OrthographicCamera camera;
-    ScalingViewport sv;
 
     float fVelX;
 
     public GameScreen(Game game) {
         this.game = game;
         dpad = new DPad();
-        character = new Character(150, 150);
-        attackButton = new AttackButton(615, 25);
-        jumpButton = new JumpButton(700, 75);
-        magicButton = new MagicButton(605, 115);
+        character = new Character(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        attackButton = new AttackButton(Gdx.graphics.getWidth() - 185, 25);
+        jumpButton = new JumpButton(Gdx.graphics.getWidth() - 100, 75);
+        magicButton = new MagicButton(Gdx.graphics.getWidth() - 185, 115);
 
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 10F, 10F);
-
-        sv = new ScalingViewport(Scaling.none, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         fVelX = 5;
 
+        //click listeners for buttons that don't need to be held down
         attackButton.ibtnAttack.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -81,13 +76,12 @@ public class GameScreen extends Stage implements Screen {
             }
         });
 
-        //add actors to the stage
         this.addActor(character.imgKnight);
         this.addActor(attackButton.ibtnAttack);
         this.addActor(jumpButton.ibtnJump);
         this.addActor(magicButton.ibtnMagic);
 
-        //add dpad to the stage
+        //add the four parts of the dpad to the stage, and the dpad outline
         this.addActor(dpad.imgOutline);
         for (int i = 0; i < 4; i++) {
             this.addActor(dpad.ibtnDpad[i]);
@@ -111,6 +105,8 @@ public class GameScreen extends Stage implements Screen {
         this.act(Gdx.graphics.getDeltaTime());
         this.draw();
 
+        //checks if left or right is pressed
+        //use isPressed as it constantly checks instead of only once (for moving)
         if (dpad.ibtnDpad[1].isPressed()) {
             right();
         }
@@ -140,6 +136,7 @@ public class GameScreen extends Stage implements Screen {
 
     }
 
+    //methods for when buttons are pressed
     public void attack() {
         System.out.println("ATTACK");
     }

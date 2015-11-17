@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -21,7 +20,6 @@ public class GameScreen extends Stage implements Screen {
     JumpButton jumpButton;
     MagicButton magicButton;
 
-    SpriteBatch batch;
     OrthographicCamera camera;
 
     float fVelX;
@@ -29,12 +27,10 @@ public class GameScreen extends Stage implements Screen {
     public GameScreen(Game game) {
         this.game = game;
         dpad = new DPad();
-        character = new Character(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        character = new Character();
         attackButton = new AttackButton(Gdx.graphics.getWidth() - 185, 25);
         jumpButton = new JumpButton(Gdx.graphics.getWidth() - 100, 75);
         magicButton = new MagicButton(Gdx.graphics.getWidth() - 185, 115);
-
-        batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
 
@@ -76,7 +72,6 @@ public class GameScreen extends Stage implements Screen {
             }
         });
 
-        this.addActor(character.imgKnight);
         this.addActor(attackButton.ibtnAttack);
         this.addActor(jumpButton.ibtnJump);
         this.addActor(magicButton.ibtnMagic);
@@ -99,21 +94,24 @@ public class GameScreen extends Stage implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
-        batch.begin();
-        batch.end();
-
-        this.act(Gdx.graphics.getDeltaTime());
-        this.draw();
+        character.render(this);
 
         //checks if left or right is pressed
         //use isPressed as it constantly checks instead of only once (for moving)
         if (dpad.ibtnDpad[1].isPressed()) {
             right();
+        } else {
+            character.bRight = false;
         }
 
         if (dpad.ibtnDpad[3].isPressed()) {
             left();
+        } else {
+            character.bLeft = false;
         }
+
+        this.act(Gdx.graphics.getDeltaTime());
+        this.draw();
     }
 
     @Override
@@ -154,7 +152,7 @@ public class GameScreen extends Stage implements Screen {
     }
 
     public void right() {
-        character.imgKnight.setX(character.imgKnight.getX() + fVelX);
+        character.bRight = true;
     }
 
     public void down() {
@@ -162,6 +160,6 @@ public class GameScreen extends Stage implements Screen {
     }
 
     public void left() {
-        character.imgKnight.setX(character.imgKnight.getX() - fVelX);
+        character.bLeft = true;
     }
 }
